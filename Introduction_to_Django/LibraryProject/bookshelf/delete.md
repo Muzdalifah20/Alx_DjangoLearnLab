@@ -3,9 +3,10 @@
 ## Python Command
 
 ```python
-from bookself.models import Book
+from bookshelf.models import Book
 
-book = book.objects.get(title = "Nineteen Eighty-Four")
+
+book = Book.objects.get(title = "Nineteen Eighty-Four")
 
 book.delete()
 books = Book.objects.all()
