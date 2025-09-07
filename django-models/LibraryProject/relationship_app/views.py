@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from .models import Library, Book, Author, Librarian 
 from django.contrib.auth.forms import UserCreationForm
@@ -30,3 +30,15 @@ class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
+
+def register(request):
+    if request.method != 'POST':
+        form = UserCreationForm()
+    else:
+        form = UserCreationForm(data=request.post)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('relationship_app:list_books')
+    context = {'form':form}
+    return render(request, 'relationship_app/signup.html', context)
