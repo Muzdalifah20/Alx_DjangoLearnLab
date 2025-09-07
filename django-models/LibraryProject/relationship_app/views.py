@@ -35,10 +35,10 @@ def register(request):
     if request.method != 'POST':
         form = UserCreationForm()
     else:
-        form = UserCreationForm(data=request.post)
+        form = UserCreationForm(data=request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect('relationship_app:list_books')
     context = {'form':form}
-    return render(request, 'relationship_app/signup.html', context)
+    return render(request, 'registration/signup.html', context)
