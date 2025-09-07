@@ -21,7 +21,7 @@ def library_librarian(library_name):
     try:
         library = Library.objects.get(name=library_name)
 
-        librarian = Librarian.objects.get(library)
+        librarian = Librarian.objects.get(library=library)
         return librarian
     except library.DoesNotExist:
         return []
