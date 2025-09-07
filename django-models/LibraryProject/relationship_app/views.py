@@ -4,7 +4,7 @@ from .models import Book, Library
 
 # Create your views here.
 
-def books(request):
+def list_books(request):
     """Listing All books stored in the database"""
     books = Book.objects.all()
     context = {'books':books}
