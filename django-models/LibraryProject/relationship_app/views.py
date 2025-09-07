@@ -8,6 +8,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import user_passes_test, permission_required
 
 
+
 def list_books(request):
     """Listing All books stored in the database"""
     books = Book.objects.all()
