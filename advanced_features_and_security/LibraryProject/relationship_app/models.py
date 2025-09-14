@@ -1,6 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser 
+# from django.contrib.auth.models import User
+ 
 from django.conf import settings
 
 # Create your models here.
@@ -39,9 +39,7 @@ class Librarian(models.Model):
         return self.name
     
     
-class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(null=True, blank=True)
-    profile_photo = models.ImageField(upload_to='profile_photos/',null=True, blank=True)
+ 
 
 
 class UserProfile(models.Model):
