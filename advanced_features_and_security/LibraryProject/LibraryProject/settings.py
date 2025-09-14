@@ -136,3 +136,23 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
  
 CSP_DEFAULT_SRC = ("'self'", )
 CSP_SCRIPT_SRC = ("'self'", 'ajax.googleapis.com')
+
+# Redirect all non-HTTPS requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS) settings to force HTTPS on browsers
+SECURE_HSTS_SECONDS = 31536000  # 1 year in seconds
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Security headers to protect against common web attacks
+X_FRAME_OPTIONS = 'DENY'            # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True # Prevent MIME type sniffing
+SECURE_BROWSER_XSS_FILTER = True   # Enable browser XSS filter
+
+# If behind a proxy or load balancer, tell Django how to detect HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
