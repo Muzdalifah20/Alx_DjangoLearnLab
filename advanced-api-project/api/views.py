@@ -4,32 +4,33 @@
 # from django.contrib.auth.mixins import LoginRequiredMixin
 # from rest_framework import permissions
 # from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-from .models import Book
-from .serializers import BookSerializer
-from rest_framework import viewsets, permissions
 
-class BookViewSet(viewsets.ModelViewSet):
-    """
-    A ModelViewSet for managing Book instances through the API.
+# from .models import Book
+# from .serializers import BookSerializer
+# from rest_framework import viewsets, permissions
 
-    Provides the following actions automatically:
-    - list: Retrieve all Book instances (read-only).
-    - retrieve: Get details of a single Book by ID.
-    - create: Add a new Book instance.
-    - update: Modify an existing Book instance.
-    - partial_update: Partially update fields of a Book.
-    - destroy: Delete a Book instance.
+# class BookViewSet(viewsets.ModelViewSet):
+#     """
+#     A ModelViewSet for managing Book instances through the API.
 
-    Permission Policy:
-    - Read operations (list and retrieve) are openly accessible (AllowAny).
-    - Write operations (create, update, partial_update, destroy) are restricted to authenticated users.
+#     Provides the following actions automatically:
+#     - list: Retrieve all Book instances (read-only).
+#     - retrieve: Get details of a single Book by ID.
+#     - create: Add a new Book instance.
+#     - update: Modify an existing Book instance.
+#     - partial_update: Partially update fields of a Book.
+#     - destroy: Delete a Book instance.
 
-    This is enforced with the IsAuthenticatedOrReadOnly permission class.
-    """
+#     Permission Policy:
+#     - Read operations (list and retrieve) are openly accessible (AllowAny).
+#     - Write operations (create, update, partial_update, destroy) are restricted to authenticated users.
 
-    queryset = Book.objects.all()     
-    serializer_class = BookSerializer    
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+#     This is enforced with the IsAuthenticatedOrReadOnly permission class.
+#     """
+
+#     queryset = Book.objects.all()     
+#     serializer_class = BookSerializer    
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 # class BookListView(ListView):
@@ -116,3 +117,66 @@ class BookViewSet(viewsets.ModelViewSet):
 #     queryset = Book.objects.all()
 #     serializer_class = BookSerializer
 #     permission_classes = [permissions.IsAuthenticated]
+
+from rest_framework import generics, permissions
+from .models import Book
+from .serializers import BookSerializer
+
+# List all books (GET)
+class BookListView(generics.ListAPIView):
+    """
+    GET /books/
+    Lists all books.
+    Public access.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.AllowAny]   
+
+# Retrieve single book by ID (GET)
+class BookDetailView(generics.RetrieveAPIView):
+    """
+    GET /books/{id}/
+    Retrieves the details of a specific book.
+    Public access.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.AllowAny]
+
+# Create a new book (POST)
+class BookCreateView(generics.CreateAPIView):
+    """
+    POST /books/create/
+    Creates a new book.
+    Requires user authentication.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]  
+
+    def perform_create(self, serializer):
+        
+        serializer.save()
+
+# Update a book (PUT/PATCH)
+class BookUpdateView(generics.UpdateAPIView):
+    """
+    PUT /books/{id}/update/
+    Updates an existing book.
+    Requires user authentication.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+# Delete a book (DELETE)
+class BookDeleteView(generics.DestroyAPIView):
+    """
+    DELETE /books/{id}/delete/
+    Deletes a book.
+    Requires user authentication.
+    """
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [permissions.IsAuthenticated]
