@@ -9,10 +9,13 @@
 #     path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book_delete'),
 # ]
 
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import BookViewSet
 
 router = DefaultRouter()
 router.register(r'books', BookViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)), 
+]
