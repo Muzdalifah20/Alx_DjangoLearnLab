@@ -1,0 +1,7 @@
+<h1>Book Detail</h1>
+<p>Title: {{ object.title }}</p>
+<p>Publication Year: {{ object.publication_year }}</p>
+<p>Author: {{ object.author.name }}</p>
+<a href="{% url 'book_update' object.pk %}">Edit</a> |
+<a href="{% url 'book_delete' object.pk %}">Delete</a> |
+<a href="{% url 'book_list' %}">Back to list</a>
