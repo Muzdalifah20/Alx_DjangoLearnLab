@@ -4,7 +4,7 @@ from .forms import CustomUserCreationFor, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile, Post
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
@@ -72,9 +72,17 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         form.instance.author = self.request.user
         return super().form_vlaid(form)
     
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+    
 
-class PostDeleteview(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+class PostDeleteview(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = "post_confirm_delete.html"
     success_url = reverse_lazy("post_list")
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
         
