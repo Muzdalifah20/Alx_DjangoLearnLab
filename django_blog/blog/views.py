@@ -1,8 +1,12 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from .forms import CustomUserCreationFor, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Profile
+from .models import Profile, Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 
  
 
@@ -38,3 +42,39 @@ def profile(request):
 
     context = {'updated_form': updated_form, 'profile_form': profile_form}
     return render(request, 'profile.html', context)
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'post_list.html'
+    context_object_name = 'posts'
+    ordering = ['-published_date']
+    paginate_by = 5
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "post_detail.html"
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'content']
+    template_name = "post_form.html"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    fields = ['title', 'content']
+    template_name = 'post_form.html'
+
+    def form_vlaid(self, form):
+        form.instance.author = self.request.user
+        return super().form_vlaid(form)
+    
+
+class PostDeleteview(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    model = Post
+    template_name = "post_confirm_delete.html"
+    success_url = reverse_lazy("post_list")
+        

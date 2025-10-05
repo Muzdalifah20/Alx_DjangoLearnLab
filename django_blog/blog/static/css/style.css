@@ -49,3 +49,100 @@ legend {
   font-weight: bold;
   padding: 0 5px;
 }
+
+/* Target only the logout button inside the nav form */
+header nav form {
+  display: inline; /* Make the form inline so it doesn't take full width */
+  margin: 0; /* Remove extra margins */
+  padding: 0; /* Remove extra padding */
+}
+
+header nav form button {
+  all: unset; /* Remove all default button styling */
+  cursor: pointer; /* Show pointer cursor on hover */
+  color: #007bff; /* Link color */
+  text-decoration: underline; /* Make it look like a link */
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Optional: add hover effect matching links */
+header nav form button:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+/* Blog post list and detail container */
+main {
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h1 {
+  color: #222;
+  margin-bottom: 15px;
+}
+
+/* Links */
+a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* List of posts */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  border: 1px solid #ddd;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #fafafa;
+}
+
+/* Article content in post_detail */
+article p {
+  line-height: 1.6;
+  color: #444;
+  margin: 12px 0;
+}
+
+/* Form buttons for create/edit */
+form button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Cancel link */
+a.cancel-link {
+  margin-left: 15px;
+  font-size: 14px;
+  color: #666;
+}
+
+a.cancel-link:hover {
+  color: #333;
+  text-decoration: underline;
+}
