@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <title>{% block title %}My Django Blog{% endblock %}</title>
   </head>
   <body>
@@ -28,8 +30,5 @@
       </ul>
       {% endif %} {% block content %} {% endblock content %}
     </main>
-    <footer>
-      <p>© 2025 My Django Blog</p>
-    </footer>
   </body>
 </html>
