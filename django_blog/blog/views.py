@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationFor, UserUpdateForm, ProfileUpdateForm
+from .forms import CustomUserCreationFor, UserUpdateForm, ProfileUpdateForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Profile, Post
+from .models import Profile, Post, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
@@ -86,3 +87,44 @@ class PostDeleteview(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         post = self.get_object()
         return self.request.user == post.author
         
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect("post_detail", pk=post.id)
+    else:
+        form = CommentForm()
+    return render(request, "comment_form.html", {'form': form})
+
+@login_required
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.author != request.user:
+        return HttpResponseForbidden()
+    if request.method == "POST":
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect("post_detail", pk=comment.post.id)
+    else:
+        form = CommentForm(instance=comment)
+    return render(request, "comment_form.html", {'form': form})
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.author != request.user:
+        return HttpResponseForbidden()
+    post_id = comment.post.id
+    if request.method == "POST":
+        comment.delete()
+        return redirect("post_detail", pk=post_id)
+    return render(request, "comment_confirm_delete.html", {'comment': comment})
+
